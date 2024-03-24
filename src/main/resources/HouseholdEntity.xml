@@ -7,31 +7,31 @@
 
         <attributes>
             <id name="id">
-                <column name="id" nullable="false"/>
+                <column name="id" nullable="false" precision="-1"/>
             </id>
             <basic name="geographicArea">
-                <column name="geographicArea" nullable="false"/>
+                <column name="geographicArea" nullable="false" precision="-1"/>
             </basic>
             <basic name="householdType">
-                <column name="householdType" nullable="false"/>
+                <column name="householdType" nullable="false" precision="-1"/>
             </basic>
             <basic name="householdSize">
-                <column name="householdSize" nullable="false"/>
+                <column name="householdSize" nullable="false" precision="-1"/>
             </basic>
             <basic name="householdsByAgeRange">
-                <column name="householdsByAgeRange" nullable="false"/>
+                <column name="householdsByAgeRange" nullable="false" precision="-1"/>
             </basic>
             <basic name="householdEarners">
-                <column name="householdEarners" nullable="false"/>
+                <column name="householdEarners" nullable="false" precision="-1"/>
             </basic>
             <basic name="totalIncome">
-                <column name="totalIncome" nullable="false"/>
+                <column name="totalIncome" nullable="false" precision="-1"/>
             </basic>
             <basic name="censusYear">
-                <column name="censusYear" nullable="false"/>
+                <column name="censusYear" nullable="false" precision="-1"/>
             </basic>
             <basic name="numberReported">
-                <column name="numberReported" nullable="false"/>
+                <column name="numberReported" nullable="false" precision="-1"/>
             </basic>
         </attributes>
     </entity>

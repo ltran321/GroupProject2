@@ -6,7 +6,7 @@
         <table name="censusyear" schema="canadacensusdb" catalog=""/>
         <attributes>
             <id name="censusYearID">
-                <column name="censusYearID" nullable="false"/>
+                <column name="censusYearID" nullable="false" precision="-1"/>
             </id>
             <basic name="censusYear">
                 <column name="censusYear" nullable="false"/>
