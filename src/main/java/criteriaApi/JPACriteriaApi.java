@@ -67,14 +67,17 @@ public class JPACriteriaApi {
 
 			// QUESTION 5 - PART E
 			CriteriaQuery<Object[]> groupByQuery = criteriaBuilder.createQuery(Object[].class);
-			groupByQuery.multiselect(geoArea.get("level"), criteriaBuilder.count(geoArea))
-					.groupBy(geoArea.get("level"));
+			Root<GeographicAreaEntity> geo2 = groupByQuery.from(GeographicAreaEntity.class);
+            groupByQuery.multiselect(geo2.get("level"), criteriaBuilder.count(geo2))
+                    .groupBy(geo2.get("level"));
 
-			TypedQuery<Object[]> query = entityManager.createQuery(groupByQuery);
-			List<Object[]> groupByClauseList = query.getResultList();
-			System.out.println("********** QUESTION 5 - PART E **********");
-			System.out.printf("%-20s %-20s %n", "Level", "Total Geographic Area");
-			groupByClauseList.forEach(ge -> System.out.printf("%-20s %-20s %n", ge[0], ge[1]));
+            // Display Output
+            TypedQuery<Object[]> query = entityManager.createQuery(groupByQuery);
+            List<Object[]> groupByClauseList = query.getResultList();
+            System.out.println("********** QUESTION 5 - PART E **********");
+            System.out.printf("%-20s %-20s %n", "Level", "Total Geo Area");
+            groupByClauseList.forEach(dept -> System.out.printf("%-20s %-20s %n",
+                    dept[0], dept[1]));
 
 		} catch (PersistenceException pe) {
 			System.out.println("Error: " + pe.getMessage());
