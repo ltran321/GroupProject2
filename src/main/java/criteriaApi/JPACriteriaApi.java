@@ -11,6 +11,8 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+
+import entity.AgeEntity;
 import entity.GeographicAreaEntity;
 
 public class JPACriteriaApi {
@@ -29,6 +31,10 @@ public class JPACriteriaApi {
             Root<GeographicAreaEntity> geoArea = geoAreaCritQuery.from(GeographicAreaEntity.class);
 			MultiSelectTen(entityManager,geoAreaCritQuery,geoArea);
 			
+			//QUESTION 5 - PART B
+			CriteriaQuery<AgeEntity> ageCritQuery = criteriaBuilder.createQuery(AgeEntity.class);
+			Root<AgeEntity> age = ageCritQuery.from(AgeEntity.class);
+			TopTwentyCombined(entityManager,criteriaBuilder,ageCritQuery,age);
 			
 			
 		} catch (PersistenceException pe) {
@@ -53,14 +59,24 @@ public class JPACriteriaApi {
         List<GeographicAreaEntity> geoAreaList = query.getResultList();
         System.out.println("********** QUESTION 5 - PART A **********");
         System.out.printf("%-20s %-20s %-20s %n", "Code", "Level", "Name");
-        geoAreaList.forEach(emp -> System.out.printf("%-20s %-20s %-20s %n",
-                emp.getCode(), emp.getLevel(), emp.getName()));
+        geoAreaList.forEach(geo -> System.out.printf("%-20s %-20s %-20s %n",
+        		geo.getCode(), geo.getLevel(), geo.getName()));
 
 	}
 
 	// QUESTION 5 - PART B
-	public static void TopTwenty() {
+	public static void TopTwentyCombined(EntityManager enMan, CriteriaBuilder critBuilder, CriteriaQuery<AgeEntity> critQuery, Root<AgeEntity> age) {
 
+		critQuery.orderBy(critBuilder.desc(age.get("combined")));
+        CriteriaQuery<AgeEntity> orderBy = critQuery.select(age);
+        
+     // Display Output
+        TypedQuery<AgeEntity> query = enMan.createQuery(orderBy).setMaxResults(20);
+        List<AgeEntity> ageList = query.getResultList();
+        System.out.println("********** QUESTION 5 - PART B **********");
+        System.out.printf("%-20s %-20s %-20s %-20s %n", "AgeGroup", "CensusYear", "GeographicArea", "Combined");
+        ageList.forEach(ag -> System.out.printf("%-20s %-20s %-20s %-20s %n",
+        		ag.getAgeGroup(), ag.getCensusYear(), ag.getGeographicArea(), ag.getCombined()));
 	}
 
 	// QUESTION 5 - PART C
