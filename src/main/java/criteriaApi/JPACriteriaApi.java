@@ -10,7 +10,10 @@ import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+
+import entity.EmployeesEntity;
 import entity.GeographicAreaEntity;
 
 public class JPACriteriaApi {
@@ -20,6 +23,13 @@ public class JPACriteriaApi {
 		EntityTransaction entityTransaction = entityManager.getTransaction();
 
 		try {
+			
+			// Question 2, find geographic area with ID 10
+			GeographicAreaEntity ga = entityManager.find(GeographicAreaEntity.class,10);
+			
+			System.out.println(ga);
+			
+			
 			//Begin Transaction
 			entityTransaction.begin();
             CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
@@ -29,6 +39,19 @@ public class JPACriteriaApi {
             Root<GeographicAreaEntity> geoArea = geoAreaCritQuery.from(GeographicAreaEntity.class);
 			MultiSelectTen(entityManager,geoAreaCritQuery,geoArea);
 			
+			// Question 3, Geographic Area information for the Level 2.
+			
+            Predicate predicate = criteriaBuilder.equal(geoArea.get("level"), "2");
+            geoAreaCritQuery.where(predicate);
+            CriteriaQuery<GeographicAreaEntity> whereClause = geoAreaCritQuery.select(geoArea);
+
+            // Display Output
+            TypedQuery<GeographicAreaEntity> selectQuery = entityManager.createQuery(whereClause);
+            List<GeographicAreaEntity> geographicAreaEntityList = selectQuery.getResultList();
+            System.out.println("************************** Geographic Area for Level 2 ****************************");
+            System.out.printf("%-20s %-20s %-20s %-20s %-20s %n", "ID","Code", "Level", "Name", "AlternativeCode");
+            geographicAreaEntityList.forEach(gaEL -> System.out.printf("%-20s %-20s %-20s %-20s %-20s %n",
+            		gaEL.getGeographicAreaID(), gaEL.getCode(), gaEL.getLevel(), gaEL.getName(), gaEL.getAlternativeCode()));
 			
 			
 		} catch (PersistenceException pe) {
