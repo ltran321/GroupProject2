@@ -9,25 +9,29 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
 	<persistence-unit name="default">
-		<mapping-file>CountriesEntity.xml</mapping-file>
-		<mapping-file>DepartmentsEntity.xml</mapping-file>
-		<mapping-file>DependentsEntity.xml</mapping-file>
-		<mapping-file>EmployeesEntity.xml</mapping-file>
-		<mapping-file>JobHistoryEntity.xml</mapping-file>
-		<mapping-file>JobsEntity.xml</mapping-file>
-		<mapping-file>LocationsEntity.xml</mapping-file>
-		<mapping-file>RegionsEntity.xml</mapping-file>
+		<mapping-file>AgeEntity.xml</mapping-file>
+		<mapping-file>AgeGroupEntity.xml</mapping-file>
+		<mapping-file>CensusYearEntity.xml</mapping-file>
+		<mapping-file>GeographicAreaEntity.xml</mapping-file>
+		<mapping-file>HouseholdEntity.xml</mapping-file>
+		<mapping-file>HouseholdEarnersEntity.xml</mapping-file>
+		<mapping-file>HouseholdsByAgeRangeEntity.xml</mapping-file>
+		<mapping-file>HouseholdSizeEntity.xml</mapping-file>
+		<mapping-file>HouseholdTypeEntity.xml</mapping-file>
+		<mapping-file>TotalIncomeEntity.xml</mapping-file>
 
-		<class>entity.CountriesEntity</class>
-		<class>entity.DepartmentsEntity</class>
-		<class>entity.DependentsEntity</class>
-		<class>entity.EmployeesEntity</class>
-		<class>entity.JobHistoryEntity</class>
-		<class>entity.JobsEntity</class>
-		<class>entity.LocationsEntity</class>
-		<class>entity.RegionsEntity</class>
+		<class>entity.AgeEntity</class>
+		<class>entity.AgeGroupEntity</class>
+		<class>entity.CensusYearEntity</class>
+		<class>entity.GeographicAreaEntity</class>
+		<class>entity.HouseholdEntity</class>
+		<class>entity.HouseholdEarnersEntity</class>
+		<class>entity.HouseholdsByAgeRangeEntity</class>
+		<class>entity.HouseholdSizeEntity</class>
+		<class>entity.HouseholdTypeEntity</class>
+		<class>entity.TotalIncomeEntity</class>
 		<properties>
-			<property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/hr" />
+			<property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/canadacensusdb" />
 			<property name="hibernate.connection.driver_class" value="com.mysql.cj.jdbc.Driver" />
 			<property name="hibernate.connection.username" value="root" />
 			<property name="hibernate.connection.password" value="root" />

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="https://jakarta.ee/xml/ns/persistence/orm"
+                 version="3.0">
+
+    <entity class="entity.AgeEntity">
+        <table name="age" schema="canadacensusdb" catalog=""/>
+        <attributes>
+            <id name="ageId">
+                <column name="ageId" nullable="false"/>
+            </id>
+            <basic name="ageGroup">
+                <column name="ageGroup" nullable="false" />
+            </basic>
+            <basic name="censusYear">
+                <column name="censusYear" nullable="false" />
+            </basic>
+            <basic name="geographicArea">
+                <column name="geographicArea" nullable="false" />
+            </basic>
+            <basic name="combined">
+                <column name="combined" nullable="false" />
+            </basic>
+            <basic name="male">
+                <column name="male" nullable="false" />
+            </basic>
+            <basic name="female">
+                <column name="female" nullable="false" />
+            </basic>
+        </attributes>
+    </entity>
+</entity-mappings>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="https://jakarta.ee/xml/ns/persistence/orm"
+                 version="3.0">
+
+    <entity class="entity.HouseholdEntity">
+        <table name="household" schema="canadacensusdb" catalog=""/>
+
+        <attributes>
+            <id name="id">
+                <column name="id" nullable="false"/>
+            </id>
+            <basic name="geographicArea">
+                <column name="geographicArea" nullable="false"/>
+            </basic>
+            <basic name="householdType">
+                <column name="householdType" nullable="false"/>
+            </basic>
+            <basic name="householdSize">
+                <column name="householdSize" nullable="false"/>
+            </basic>
+            <basic name="householdsByAgeRange">
+                <column name="householdsByAgeRange" nullable="false"/>
+            </basic>
+            <basic name="householdEarners">
+                <column name="householdEarners" nullable="false"/>
+            </basic>
+            <basic name="totalIncome">
+                <column name="totalIncome" nullable="false"/>
+            </basic>
+            <basic name="censusYear">
+                <column name="censusYear" nullable="false"/>
+            </basic>
+            <basic name="numberReported">
+                <column name="numberReported" nullable="false"/>
+            </basic>
+        </attributes>
+    </entity>
+</entity-mappings>

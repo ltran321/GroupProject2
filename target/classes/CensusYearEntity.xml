@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="https://jakarta.ee/xml/ns/persistence/orm"
+                 version="3.0">
+
+    <entity class="entity.CensusYearEntity">
+        <table name="censusyear" schema="canadacensusdb" catalog=""/>
+        <attributes>
+            <id name="censusYearID">
+                <column name="censusYearID" nullable="false"/>
+            </id>
+            <basic name="censusYear">
+                <column name="censusYear" nullable="false"/>
+            </basic>
+        </attributes>
+    </entity>
+</entity-mappings>
