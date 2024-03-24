@@ -16,6 +16,7 @@ import javax.persistence.criteria.Root;
 import entity.AgeEntity;
 import entity.TotalIncomeEntity;
 import entity.GeographicAreaEntity;
+import entity.HouseholdEntity;
 
 public class JPACriteriaApi {
 	public static void main(String[] args) {
@@ -31,23 +32,28 @@ public class JPACriteriaApi {
 					.createQuery(GeographicAreaEntity.class);
 			Root<GeographicAreaEntity> geoArea = geoAreaCritQuery.from(GeographicAreaEntity.class);
 
+//			CriteriaQuery<HouseholdEntity> householdCritQuery = criteriaBuilder
+//					.createQuery(HouseholdEntity.class);
+//			Root<HouseholdEntity> household = householdCritQuery.from(HouseholdEntity.class);
+
 			// Question 2, find geographic area with ID 10
 			GeographicAreaEntity ga = entityManager.find(GeographicAreaEntity.class, 10);
 			System.out.println(ga);
 
-			// Question 3, Geographic Area information for the Level 2.
-			Predicate predicate = criteriaBuilder.equal(geoArea.get("level"), "2");
-			geoAreaCritQuery.where(predicate);
-			CriteriaQuery<GeographicAreaEntity> whereClause = geoAreaCritQuery.select(geoArea);
+			// Question 3, Geographic Area information for the Level 2
+			GeographicLevelTwo(entityManager, criteriaBuilder, geoAreaCritQuery, geoArea);
 
-			// Display Output
-			TypedQuery<GeographicAreaEntity> selectQuery = entityManager.createQuery(whereClause);
-			List<GeographicAreaEntity> geographicAreaEntityList = selectQuery.getResultList();
-			System.out.println("************************** Geographic Area for Level 2 ****************************");
-			System.out.printf("%-20s %-20s %-20s %-20s %-20s %n", "ID", "Code", "Level", "Name", "AlternativeCode");
-			geographicAreaEntityList
-					.forEach(gaEL -> System.out.printf("%-20s %-20s %-20s %-20s %-20s %n", gaEL.getGeographicAreaID(),
-							gaEL.getCode(), gaEL.getLevel(), gaEL.getName(), gaEL.getAlternativeCode()));
+			// Question 4 - Part A
+			OneCoupleCensus(entityManager, criteriaBuilder);
+			
+			// Question 4 - Part B
+			TwoOrMoreMembers(entityManager, criteriaBuilder);
+			
+			// Question 4 - Part C
+			OneEarnerHousehold(entityManager, criteriaBuilder);
+			
+			//Question 4 - Part D
+			TotalIncome(entityManager, criteriaBuilder);
 
 			// QUESTION 5 - PART A
 			MultiSelectTen(entityManager, geoAreaCritQuery, geoArea);
@@ -68,16 +74,14 @@ public class JPACriteriaApi {
 			// QUESTION 5 - PART E
 			CriteriaQuery<Object[]> groupByQuery = criteriaBuilder.createQuery(Object[].class);
 			Root<GeographicAreaEntity> geo2 = groupByQuery.from(GeographicAreaEntity.class);
-            groupByQuery.multiselect(geo2.get("level"), criteriaBuilder.count(geo2))
-                    .groupBy(geo2.get("level"));
+			groupByQuery.multiselect(geo2.get("level"), criteriaBuilder.count(geo2)).groupBy(geo2.get("level"));
 
-            // Display Output
-            TypedQuery<Object[]> query = entityManager.createQuery(groupByQuery);
-            List<Object[]> groupByClauseList = query.getResultList();
-            System.out.println("********** QUESTION 5 - PART E **********");
-            System.out.printf("%-20s %-20s %n", "Level", "Total Geo Area");
-            groupByClauseList.forEach(dept -> System.out.printf("%-20s %-20s %n",
-                    dept[0], dept[1]));
+			// Display Output
+			TypedQuery<Object[]> query = entityManager.createQuery(groupByQuery);
+			List<Object[]> groupByClauseList = query.getResultList();
+			System.out.println("********** QUESTION 5 - PART E **********");
+			System.out.printf("%-20s %-20s %n", "Level", "Total Geo Area");
+			groupByClauseList.forEach(dept -> System.out.printf("%-20s %-20s %n", dept[0], dept[1]));
 
 		} catch (PersistenceException pe) {
 			System.out.println("Error: " + pe.getMessage());
@@ -88,6 +92,107 @@ public class JPACriteriaApi {
 			entityManager.close();
 			entityManagerFactory.close();
 		}
+	}
+
+	// Question 3 Geographic Area information for the Level 2
+	public static void GeographicLevelTwo(EntityManager manager, CriteriaBuilder criteriaBuilder,
+			CriteriaQuery<GeographicAreaEntity> critQuery, Root<GeographicAreaEntity> geoArea) {
+		Predicate predicate = criteriaBuilder.equal(geoArea.get("level"), "2");
+		critQuery.where(predicate);
+		CriteriaQuery<GeographicAreaEntity> whereClause = critQuery.select(geoArea);
+
+		TypedQuery<GeographicAreaEntity> selectQuery = manager.createQuery(whereClause);
+		List<GeographicAreaEntity> geographicAreaEntityList = selectQuery.getResultList();
+		System.out.println("************************** Question 3 Geographic Area for Level 2 ****************************");
+		System.out.printf("%-20s %-20s %-20s %-20s %-20s %n", "ID", "Code", "Level", "Name", "AlternativeCode");
+		geographicAreaEntityList
+				.forEach(gaEL -> System.out.printf("%-20s %-20s %-20s %-20s %-20s %n", gaEL.getGeographicAreaID(),
+						gaEL.getCode(), gaEL.getLevel(), gaEL.getName(), gaEL.getAlternativeCode()));
+	}
+
+	// Question 4 - A
+	public static void OneCoupleCensus(EntityManager manager, CriteriaBuilder criteriaBuilder) {
+		CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
+		Root<HouseholdEntity> household = criteriaQuery.from(HouseholdEntity.class);
+
+		// where clause
+		Predicate predicate = criteriaBuilder.and(criteriaBuilder.equal(household.get("householdType"), "4"),
+				criteriaBuilder.equal(household.get("censusYear"), "2"));
+
+		criteriaQuery.where(predicate);
+
+		// count the number of records
+		criteriaQuery.select(criteriaBuilder.count(household));
+
+		Long totalCount = manager.createQuery(criteriaQuery).getSingleResult();
+		
+		// Display Output
+		System.out.println("************************** Question 4 - Part A ****************************");
+		System.out.println("Total number of records: " + totalCount);
+
+	}
+	
+	// Question 4 - B
+	public static void TwoOrMoreMembers (EntityManager manager, CriteriaBuilder criteriaBuilder) {
+		CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
+		Root<HouseholdEntity> household = criteriaQuery.from(HouseholdEntity.class);
+
+		// where clause
+		Predicate predicate = criteriaBuilder.and(criteriaBuilder.equal(household.get("householdSize"), "3"),
+				criteriaBuilder.equal(household.get("censusYear"), "2"));
+
+		criteriaQuery.where(predicate);
+
+		// count the number of records
+		criteriaQuery.select(criteriaBuilder.count(household));
+
+		Long totalCount = manager.createQuery(criteriaQuery).getSingleResult();
+		
+		// Display Output
+		System.out.println("************************** Question 4 - Part B ****************************");
+		System.out.println("Total number of records: " + totalCount);
+	}
+	
+	// Question 4 - C
+	public static void OneEarnerHousehold (EntityManager manager, CriteriaBuilder criteriaBuilder) {
+		CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
+		Root<HouseholdEntity> household = criteriaQuery.from(HouseholdEntity.class);
+
+		// where clause
+		Predicate predicate = criteriaBuilder.and(criteriaBuilder.equal(household.get("householdEarners"), "3"),
+				criteriaBuilder.equal(household.get("censusYear"), "2"));
+
+		criteriaQuery.where(predicate);
+
+		// count the number of records
+		criteriaQuery.select(criteriaBuilder.count(household));
+
+		Long totalCount = manager.createQuery(criteriaQuery).getSingleResult();
+		
+		// Display Output
+		System.out.println("************************** Question 4 - Part C ****************************");
+		System.out.println("Total number of records: " + totalCount);
+	}
+	
+	// Question 4 - D
+	public static void TotalIncome (EntityManager manager, CriteriaBuilder criteriaBuilder) {
+		CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
+		Root<HouseholdEntity> household = criteriaQuery.from(HouseholdEntity.class);
+
+		// where clause
+		Predicate predicate = criteriaBuilder.and(criteriaBuilder.equal(household.get("totalIncome"), "15"),
+				criteriaBuilder.equal(household.get("censusYear"), "2"));
+
+		criteriaQuery.where(predicate);
+
+		// count the number of records
+		criteriaQuery.select(criteriaBuilder.count(household));
+
+		Long totalCount = manager.createQuery(criteriaQuery).getSingleResult();
+		
+		// Display Output
+		System.out.println("************************** Question 4 - Part D ****************************");
+		System.out.println("Total number of records: " + totalCount);
 	}
 
 	// QUESTION 5 - PART A
