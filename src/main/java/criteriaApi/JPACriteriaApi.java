@@ -51,7 +51,7 @@ public class JPACriteriaApi {
 
 			// QUESTION 5 - PART A
 			MultiSelectTen(entityManager, geoAreaCritQuery, geoArea);
-			
+
 			// QUESTION 5 - PART B
 			CriteriaQuery<AgeEntity> ageCritQuery = criteriaBuilder.createQuery(AgeEntity.class);
 			Root<AgeEntity> age = ageCritQuery.from(AgeEntity.class);
@@ -67,7 +67,7 @@ public class JPACriteriaApi {
 
 			// QUESTION 5 - PART E
 			CriteriaQuery<Object[]> groupByQuery = criteriaBuilder.createQuery(Object[].class);
-			groupByQuery.multiselect(geoArea.get("geographicAreaID").get("name"), criteriaBuilder.count(geoArea))
+			groupByQuery.multiselect(geoArea.get("level"), criteriaBuilder.count(geoArea))
 					.groupBy(geoArea.get("level"));
 
 			TypedQuery<Object[]> query = entityManager.createQuery(groupByQuery);
@@ -154,9 +154,4 @@ public class JPACriteriaApi {
 		incomeList.forEach(income -> System.out.printf("%-20s %-20s %n", income.getId(), income.getDescription()));
 	}
 
-	// QUESTION 5 - PART E
-	public static void GroupByLevel(EntityManager enMan, CriteriaBuilder critBuilder,
-			CriteriaQuery<GeographicAreaEntity> critQuery, Root<GeographicAreaEntity> geoArea) {
-
-	}
 }
