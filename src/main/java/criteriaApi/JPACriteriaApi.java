@@ -14,6 +14,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import entity.AgeEntity;
+import entity.TotalIncomeEntity;
 import entity.GeographicAreaEntity;
 
 public class JPACriteriaApi {
@@ -40,6 +41,11 @@ public class JPACriteriaApi {
 
 			// QUESTION 5 - PART C
 			GetGeoAreaPeterborough(entityManager, criteriaBuilder, geoAreaCritQuery, geoArea);
+
+			// QUESTION 5 - PART D
+			CriteriaQuery<TotalIncomeEntity> incomeCritQuery = criteriaBuilder.createQuery(TotalIncomeEntity.class);
+			Root<TotalIncomeEntity> income = incomeCritQuery.from(TotalIncomeEntity.class);
+			BetweenTenAndTwenty(entityManager, criteriaBuilder, incomeCritQuery, income);
 
 		} catch (PersistenceException pe) {
 			System.out.println("Error: " + pe.getMessage());
@@ -104,8 +110,20 @@ public class JPACriteriaApi {
 	}
 
 	// QUESTION 5 - PART D
-	public static void BetweenTenAndTwenty() {
+	public static void BetweenTenAndTwenty(EntityManager enMan, CriteriaBuilder critBuilder,
+			CriteriaQuery<TotalIncomeEntity> critQuery, Root<TotalIncomeEntity> totIncome) {
 
+		Predicate predicate = critBuilder.between(totIncome.get("id"), 10, 20);
+		critQuery.where(predicate);
+		CriteriaQuery<TotalIncomeEntity> whereClause = critQuery.select(totIncome);
+		
+		// Display Output
+		TypedQuery<TotalIncomeEntity> query = enMan.createQuery(whereClause);
+		List<TotalIncomeEntity> incomeList = query.getResultList();
+		System.out.println("********** QUESTION 5 - PART D **********");
+		System.out.printf("%-20s %-20s %n", "ID", "IncomeDescription");
+		incomeList.forEach(income -> System.out.printf("%-20s %-20s %n",
+				income.getId(), income.getDescription()));
 	}
 
 	// QUESTION 5 - PART E
