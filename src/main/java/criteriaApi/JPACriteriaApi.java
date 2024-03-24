@@ -32,10 +32,6 @@ public class JPACriteriaApi {
 					.createQuery(GeographicAreaEntity.class);
 			Root<GeographicAreaEntity> geoArea = geoAreaCritQuery.from(GeographicAreaEntity.class);
 
-//			CriteriaQuery<HouseholdEntity> householdCritQuery = criteriaBuilder
-//					.createQuery(HouseholdEntity.class);
-//			Root<HouseholdEntity> household = householdCritQuery.from(HouseholdEntity.class);
-
 			// Question 2, find geographic area with ID 10
 			GeographicAreaEntity ga = entityManager.find(GeographicAreaEntity.class, 10);
 			System.out.println(ga);
