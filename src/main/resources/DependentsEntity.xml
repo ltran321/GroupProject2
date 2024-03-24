@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="https://jakarta.ee/xml/ns/persistence/orm"
+                 version="3.0">
+
+    <entity class="entity.DependentsEntity">
+        <table name="dependents" schema="hr" catalog=""/>
+        <attributes>
+            <id name="dependentId">
+                <column name="dependent_id" precision="-1"/>
+            </id>
+            <basic name="firstName">
+                <column name="first_name" length="50"/>
+            </basic>
+            <basic name="lastName">
+                <column name="last_name" length="50"/>
+            </basic>
+            <basic name="relationship">
+                <column name="relationship" length="25"/>
+            </basic>
+            <basic name="employeeId">
+                <column name="employee_id" precision="-1"/>
+            </basic>
+        </attributes>
+    </entity>
+</entity-mappings>

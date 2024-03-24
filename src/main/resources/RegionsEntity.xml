@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="https://jakarta.ee/xml/ns/persistence/orm"
+                 version="3.0">
+
+    <entity class="entity.RegionsEntity">
+        <table name="regions" schema="hr" catalog=""/>
+        <attributes>
+            <id name="regionId">
+                <column name="region_id" precision="-1"/>
+            </id>
+            <basic name="regionName">
+                <column name="region_name" nullable="false" length="25"/>
+            </basic>
+        </attributes>
+    </entity>
+</entity-mappings>
