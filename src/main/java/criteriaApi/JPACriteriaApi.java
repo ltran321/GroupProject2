@@ -27,13 +27,31 @@ public class JPACriteriaApi {
 			// Begin Transaction
 			entityTransaction.begin();
 			CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-
-			// QUESTION 5 - PART A
 			CriteriaQuery<GeographicAreaEntity> geoAreaCritQuery = criteriaBuilder
 					.createQuery(GeographicAreaEntity.class);
 			Root<GeographicAreaEntity> geoArea = geoAreaCritQuery.from(GeographicAreaEntity.class);
-			MultiSelectTen(entityManager, geoAreaCritQuery, geoArea);
 
+			// Question 2, find geographic area with ID 10
+			GeographicAreaEntity ga = entityManager.find(GeographicAreaEntity.class, 10);
+			System.out.println(ga);
+
+			// Question 3, Geographic Area information for the Level 2.
+			Predicate predicate = criteriaBuilder.equal(geoArea.get("level"), "2");
+			geoAreaCritQuery.where(predicate);
+			CriteriaQuery<GeographicAreaEntity> whereClause = geoAreaCritQuery.select(geoArea);
+
+			// Display Output
+			TypedQuery<GeographicAreaEntity> selectQuery = entityManager.createQuery(whereClause);
+			List<GeographicAreaEntity> geographicAreaEntityList = selectQuery.getResultList();
+			System.out.println("************************** Geographic Area for Level 2 ****************************");
+			System.out.printf("%-20s %-20s %-20s %-20s %-20s %n", "ID", "Code", "Level", "Name", "AlternativeCode");
+			geographicAreaEntityList
+					.forEach(gaEL -> System.out.printf("%-20s %-20s %-20s %-20s %-20s %n", gaEL.getGeographicAreaID(),
+							gaEL.getCode(), gaEL.getLevel(), gaEL.getName(), gaEL.getAlternativeCode()));
+
+			// QUESTION 5 - PART A
+			MultiSelectTen(entityManager, geoAreaCritQuery, geoArea);
+			
 			// QUESTION 5 - PART B
 			CriteriaQuery<AgeEntity> ageCritQuery = criteriaBuilder.createQuery(AgeEntity.class);
 			Root<AgeEntity> age = ageCritQuery.from(AgeEntity.class);
@@ -46,19 +64,17 @@ public class JPACriteriaApi {
 			CriteriaQuery<TotalIncomeEntity> incomeCritQuery = criteriaBuilder.createQuery(TotalIncomeEntity.class);
 			Root<TotalIncomeEntity> income = incomeCritQuery.from(TotalIncomeEntity.class);
 			BetweenTenAndTwenty(entityManager, criteriaBuilder, incomeCritQuery, income);
-			
-			//QUESTION 5 - PART E
+
+			// QUESTION 5 - PART E
 			CriteriaQuery<Object[]> groupByQuery = criteriaBuilder.createQuery(Object[].class);
-	        groupByQuery.multiselect(geoArea.get("geographicAreaID")
-	                .get("name"), criteriaBuilder.count(geoArea))
-	                .groupBy(geoArea.get("level"));
-	        
-	        TypedQuery<Object[]> query = entityManager.createQuery(groupByQuery);
-	        List<Object[]> groupByClauseList = query.getResultList();
-	        System.out.println("********** QUESTION 5 - PART E **********");
-	        System.out.printf("%-20s %-20s %n", "Level", "Total Geographic Area");
-	        groupByClauseList.forEach(ge -> System.out.printf("%-20s %-20s %n",
-	        		ge[0], ge[1]));
+			groupByQuery.multiselect(geoArea.get("geographicAreaID").get("name"), criteriaBuilder.count(geoArea))
+					.groupBy(geoArea.get("level"));
+
+			TypedQuery<Object[]> query = entityManager.createQuery(groupByQuery);
+			List<Object[]> groupByClauseList = query.getResultList();
+			System.out.println("********** QUESTION 5 - PART E **********");
+			System.out.printf("%-20s %-20s %n", "Level", "Total Geographic Area");
+			groupByClauseList.forEach(ge -> System.out.printf("%-20s %-20s %n", ge[0], ge[1]));
 
 		} catch (PersistenceException pe) {
 			System.out.println("Error: " + pe.getMessage());
@@ -129,20 +145,18 @@ public class JPACriteriaApi {
 		Predicate predicate = critBuilder.between(totIncome.get("id"), 10, 20);
 		critQuery.where(predicate);
 		CriteriaQuery<TotalIncomeEntity> whereClause = critQuery.select(totIncome);
-		
+
 		// Display Output
 		TypedQuery<TotalIncomeEntity> query = enMan.createQuery(whereClause);
 		List<TotalIncomeEntity> incomeList = query.getResultList();
 		System.out.println("********** QUESTION 5 - PART D **********");
 		System.out.printf("%-20s %-20s %n", "ID", "IncomeDescription");
-		incomeList.forEach(income -> System.out.printf("%-20s %-20s %n",
-				income.getId(), income.getDescription()));
+		incomeList.forEach(income -> System.out.printf("%-20s %-20s %n", income.getId(), income.getDescription()));
 	}
 
 	// QUESTION 5 - PART E
 	public static void GroupByLevel(EntityManager enMan, CriteriaBuilder critBuilder,
 			CriteriaQuery<GeographicAreaEntity> critQuery, Root<GeographicAreaEntity> geoArea) {
 
-		
 	}
 }
