@@ -16,6 +16,7 @@ import javax.persistence.criteria.Root;
 import entity.AgeEntity;
 import entity.TotalIncomeEntity;
 import entity.GeographicAreaEntity;
+import entity.HouseholdEntity;
 
 public class JPACriteriaApi {
 	public static void main(String[] args) {
@@ -30,6 +31,10 @@ public class JPACriteriaApi {
 			CriteriaQuery<GeographicAreaEntity> geoAreaCritQuery = criteriaBuilder
 					.createQuery(GeographicAreaEntity.class);
 			Root<GeographicAreaEntity> geoArea = geoAreaCritQuery.from(GeographicAreaEntity.class);
+			
+			CriteriaQuery<HouseholdEntity> householdCritQuery = criteriaBuilder
+					.createQuery(HouseholdEntity.class);
+			Root<HouseholdEntity> household = householdCritQuery.from(HouseholdEntity.class);
 
 			// Question 2, find geographic area with ID 10
 			GeographicAreaEntity ga = entityManager.find(GeographicAreaEntity.class, 10);
@@ -40,14 +45,26 @@ public class JPACriteriaApi {
 			geoAreaCritQuery.where(predicate);
 			CriteriaQuery<GeographicAreaEntity> whereClause = geoAreaCritQuery.select(geoArea);
 
-			// Display Output
+			// Display Output for question 3
 			TypedQuery<GeographicAreaEntity> selectQuery = entityManager.createQuery(whereClause);
 			List<GeographicAreaEntity> geographicAreaEntityList = selectQuery.getResultList();
-			System.out.println("************************** Geographic Area for Level 2 ****************************");
+			System.out.println("************************** QUESTION 3 Geographic Area for Level 2 ****************************");
 			System.out.printf("%-20s %-20s %-20s %-20s %-20s %n", "ID", "Code", "Level", "Name", "AlternativeCode");
 			geographicAreaEntityList
 					.forEach(gaEL -> System.out.printf("%-20s %-20s %-20s %-20s %-20s %n", gaEL.getGeographicAreaID(),
 							gaEL.getCode(), gaEL.getLevel(), gaEL.getName(), gaEL.getAlternativeCode()));
+			
+			// Question 4 - A
+			predicate = criteriaBuilder.and(
+				    criteriaBuilder.equal(household.get("householdtype"), "4"),
+				    criteriaBuilder.equal(household.get("censusYear"), "2")
+				);
+			
+			// Question 4 - B
+			
+			// Question 4 - C
+			
+			// Question 4 - D
 
 			// QUESTION 5 - PART A
 			MultiSelectTen(entityManager, geoAreaCritQuery, geoArea);
