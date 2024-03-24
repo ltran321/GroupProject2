@@ -6,16 +6,16 @@
         <table name="age" schema="canadacensusdb" catalog=""/>
         <attributes>
             <id name="ageId">
-                <column name="ageId" nullable="false"/>
+                <column name="ageId" nullable="false" precision="-1"/>
             </id>
             <basic name="ageGroup">
-                <column name="ageGroup" nullable="false" />
+                <column name="ageGroup" nullable="false" precision="-1"/>
             </basic>
             <basic name="censusYear">
-                <column name="censusYear" nullable="false" />
+                <column name="censusYear" nullable="false" precision="-1"/>
             </basic>
             <basic name="geographicArea">
-                <column name="geographicArea" nullable="false" />
+                <column name="geographicArea" nullable="false" precision="-1"/>
             </basic>
             <basic name="combined">
                 <column name="combined" nullable="false" />

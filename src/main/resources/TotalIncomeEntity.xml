@@ -6,7 +6,7 @@
         <table name="totalincome" schema="canadacensusdb" catalog=""/>
         <attributes>
             <id name="id">
-                <column name="id" nullable="false"/>
+                <column name="id" nullable="false" precision="-1"/>
             </id>
             <basic name="description">
                 <column name="description" nullable="false" length="40"/>

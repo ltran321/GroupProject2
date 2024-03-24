@@ -6,19 +6,19 @@
         <table name="geographicarea" schema="canadacensusdb" catalog=""/>
         <attributes>
             <id name="geographicAreaID">
-                <column name="geographicAreaID" nullable="false"/> 
+                <column name="geographicAreaID" nullable="false" precision="-1"/> 
             </id>
             <basic name="code">
-                <column name="code" nullable="false"/>
+                <column name="code" nullable="false" precision="-1"/>
             </basic>
             <basic name="level">
-                <column name="level" nullable="false"/>
+                <column name="level" nullable="false" precision="-1"/>
             </basic>
             <basic name="name">
                 <column name="name" length="40" nullable="false"/>
             </basic>
             <basic name="alternativeCode">
-                <column name="alternativeCode" nullable="false"/>
+                <column name="alternativeCode" nullable="false" precision="-1"/>
             </basic>
         </attributes>
     </entity>

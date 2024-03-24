@@ -6,7 +6,7 @@
         <table name="agegroup" schema="canadacensusdb" catalog=""/>
         <attributes>
             <id name="ageGroupID">
-                <column name="ageGroupID" nullable="false"/>
+                <column name="ageGroupID" nullable="false" precision="-1"/>
             </id>
             <basic name="description">
                 <column name="description" nullable="false" length="40"/>
